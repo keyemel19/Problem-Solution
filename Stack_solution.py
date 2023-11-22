@@ -1,0 +1,49 @@
+'''
+
+    This solution is an idea of using a stack to handle multiple types of 
+    brackets by mapping closing brackets to their corresponding opening brackets in a dictionary.
+    The function then checks if the combination of brackets in the expression is balanced.
+ 
+ 
+ '''
+
+
+
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+
+def check_balanced(expression):
+    stack = Stack()
+    brackets_map = {')': '(', ']': '[', '}': '{', '>': '<'}
+
+    for char in expression:
+        if char in '([{<':
+            stack.push(char)
+        elif char in ')]}>':
+            if stack.is_empty() or stack.peek() != brackets_map[char]:
+                return False
+            stack.pop()
+
+    return stack.is_empty()
+
+# Test cases
+expression_1 = "(2 * [3 + {4 - 5}] - <6 * 7>)"
+print(check_balanced(expression_1))  # Output: True
+
+expression_2 = "{[}]"
+print(check_balanced(expression_2))  # Output: False
